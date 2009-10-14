@@ -1,0 +1,17 @@
+Gobble loads tweets in a scrolling view.  It's similar to "Twistori":http://twistori.com/
+
+h3. Installation
+
+# Download the source
+# Edit the config.yml file to watch topics that you're interested in
+# Set up a suitable rack-friendly web server (Passenger) or just run it locally
+
+h3. Info
+
+* It uses a background daemon to regularly fetch tweets from the twitter search API
+* It's zero-conf, so the web app will automatically launch the daemon as required
+* It uses "Sinatra":http://www.sinatrarb.com/ and the BBC's "glow framework":http://www.bbc.co.uk/glow/
+
+h3. Todo
+
+* Multiple searches

@@ -1,0 +1,20 @@
+HTTP/1.1 200 OK
+Date: Sun, 11 Oct 2009 10:43:10 GMT
+Server: hi
+Status: 200 OK
+X-Served-From: searchdb006
+Content-Type: application/json; charset=utf-8
+X-Served-By: searchweb006.twitter.com
+X-Timeline-Cache-Hit: Miss
+Cache-Control: max-age=15, must-revalidate, max-age=300
+Expires: Sun, 11 Oct 2009 10:48:10 GMT
+Content-Length: 9514
+Vary: Accept-Encoding
+X-Varnish: 2074177752
+Age: 0
+Via: 1.1 varnish
+X-Cache-Svr: searchweb006.twitter.com
+X-Cache: MISS
+Connection: close
+
+{"results":[],"max_id":-1,"since_id":0,"results_per_page":15,"page":1,"completed_in":0.003348,"query":"xkxclscaaaaaaaaaaaa"}

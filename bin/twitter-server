@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'lib', 'gobbler')
+
+case ARGV.last
+  when 'start'
+    Gobbler::Daemon.start
+  when 'stop'
+    Gobbler::Daemon.stop
+  when 'restart'
+    Gobbler::Daemon.stop
+    Gobbler::Daemon.start
+  else
+    puts "Run with start, stop or restart"
+    exit 1
+end
