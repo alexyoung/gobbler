@@ -9,7 +9,7 @@ glow.ready(function() {
   });
 
   function render_tweet(tweet) {
-    return '<li><a href="">' + tweet['from_user'] + '</a> ' + tweet['text'] + '</li>';
+    return '<li><a href="http://twitter.com/' + tweet['from_user'] + '">' + tweet['from_user'] + '</a> ' + tweet['text'] + '</li>';
   }
 
   function limit_list() {

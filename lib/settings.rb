@@ -5,4 +5,8 @@ class Settings
     @@config ||= YAML.load(File.open(CONFIG_FILE))
     @@config[key]
   end
+
+  def self.[]=(key, value)
+    @@config[key] = value
+  end
 end

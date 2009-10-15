@@ -32,12 +32,8 @@ module Gobbler::Daemon
 
   def self.server ; @server ; end
 
-  def self.get_updates
-    server.get_updates
-  end
-
-  def self.tweets_since(tweet_id)
-    server.tweets_since(tweet_id)
+  def self.tweets_since(tweet_id, section = nil)
+    server.tweets_since(tweet_id, section)
   end
 
   def self.write_drb_handle(drb_handle)

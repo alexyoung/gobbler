@@ -15,12 +15,8 @@ helpers do
     Gobbler::Daemon.launch_daemon unless Gobbler::Daemon.running?
   end
 
-  def current_section
-    Settings['sections'].first
-  end
-
   def newest_tweet_id(tweets)
-    tweets.map { |section, t| t.map(&:id) }.flatten.compact.sort.last
+    tweets.map(&:id).sort.last
   end
 
   def save_newest_tweet_to_session(tweets)
@@ -29,20 +25,33 @@ helpers do
   end
 
   def tweets
-    tweets = Gobbler::Daemon.tweets_since(session[:last_tweet_id])
+    tweets = Gobbler::Daemon.tweets_since(session[:last_tweet_id], session[:current_section])
     save_newest_tweet_to_session tweets
-    tweets[current_section].map do |tweet|
-      { :from_user => tweet.from_user,
-        :text => HTMLEntities.decode_entities(tweet.text)
-      }
-    end
+    tweets.map { |t| { :from_user => t.from_user, :text => t.text } }
+  end
+
+  def show_sections
+    Settings['sections'].size != 1
+  end
+  
+  def sections
+    Settings['sections'].map do |s|
+      class_name = s == session[:current_section] ? 'selected' : ''
+      '<li class="%s"><a href="/section/%s">%s</li>' % [class_name, s, s]
+    end.join("\n")
   end
 end
 
 get '/' do
   session[:last_tweet_id] = nil
-  @current_section = current_section
-  mustache :index
+  session[:current_section] = Settings['sections'].first
+  mustache :index, :locals => { :sections => sections, :show_sections => show_sections }
+end
+
+get '/section/:section' do
+  session[:last_tweet_id] = nil
+  session[:current_section] = params[:section]
+  mustache :index, :locals => { :sections => sections, :show_sections => show_sections }
 end
 
 get '/updates.json' do
@@ -52,7 +61,6 @@ end
 
 get '/stylesheets/screen.css' do
   headers 'Content-Type' => 'text/css; charset=utf-8'
-  #sass 'public/stylesheets/screen.sass'
   sass :stylesheet
 end
 
@@ -68,12 +76,15 @@ __END__
     <link href="/stylesheets/screen.css" media="screen" rel="Stylesheet" type="text/css" />
   </head>
   <body>
-    {{{yield}}}
+    {{{ yield }}}
   </body>
 </html>
 
 @@index
 <ul id="updates"><li></li></ul>
+{{#show_sections}}
+  <ul id="sections">{{{ sections }}}</ul>
+{{/show_sections}}
 
 @@stylesheet
 body
@@ -99,3 +110,27 @@ a
 #updates li
   :overflow hidden
   :margin 10px
+
+#sections
+  :position absolute
+  :top 0
+  :background-color #ffc
+  :color #333
+  :margin 10px
+  :padding 10px
+  :list-style-type none
+  :opacity 0.8
+
+#sections a
+  :color #333
+  :width 100%
+  :display block
+  :font-size 22px
+  :text-decoration none
+
+#sections a:hover
+  :background #fff
+  :color #111
+
+#sections li.selected a
+  :color #990000

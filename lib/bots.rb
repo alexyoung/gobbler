@@ -60,12 +60,22 @@ class Gobbler::Bots
     end
     results
   end
-  
-  def tweets_since(tweet_id)
-    results = {}
-    @bots.each do |query, bot|
-      results[query] = bot.tweets_since(tweet_id)
+
+  def tweets_since(tweet_id, section = nil)
+    if section
+      tweets_since_for_section tweet_id, section
+    else
+      all_tweets_since tweet_id
     end
-    results
+  end
+
+  def all_tweets_since(tweet_id)
+    @bots.collect do |query, bot|
+      bot.tweets_since(tweet_id)
+    end
+  end
+
+  def tweets_since_for_section(tweet_id, section = nil)
+    @bots[section].tweets_since tweet_id
   end
 end
